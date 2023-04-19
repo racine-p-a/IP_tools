@@ -38,5 +38,10 @@ $long_ipv6 = $my_ip_tools->ip2long($new_ipv6);
 $new_ipv4 == $my_ip_tools->long2ip($long_ipv4); // TRUE
 $new_ipv6 == $my_ip_tools->long2ip($long_ipv6); // FALSE (due to misrepresentation of huge numbers). Still usable !
 
+// INFERRING
+// Get country of an IP address. You need an external file that you can grab here (for free) : https://download.ip2location.com/lite/
+$ipv4_country = $my_ip_tools->getCountryIPUsingIP2locateFile($ip, 'path/to/your/locatefile_ipv4.csv');
+// Works for IPv6 too ! Not perfect though...
+$ipv6_country = $my_ip_tools->getCountryIPUsingIP2locateFile($ip, 'path/to/your/locatefile_ipv6.csv');
 ```
 
