@@ -22,7 +22,6 @@ $my_ip_tools->isValidIPv4($ip);
 // Check if an IPv6 address is valid.
 $my_ip_tools->isValidIPv6($ip);
 
-
 // GENERATING
 // Generate random IPv4.
 $new_ipv4 = $my_ip_tools->generateRandomIPv4();
