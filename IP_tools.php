@@ -134,6 +134,66 @@ class IP_tools
     }
 
     /**
+     * Converts a IP address (IPv4 or IPv6) to its equivalent in binary.
+     * @param string $ip The IP address to convert.
+     * @return string
+     */
+    public function ip2binary(string $ip=''): string
+    {
+        if ($this->isValidIPv4($ip)){
+            $binary=[];
+            $ipChunks = explode(".", $ip);
+            foreach ($ipChunks as $chunk){
+                $binary[] = $this->addLeadingZeros(base_convert($chunk, 10,2));
+            }
+            return implode('.', $binary);
+        }
+        if ($this->isValidIPv6($ip)){
+            $binary=[];
+            $ipChunks = explode(":", $ip);
+            foreach ($ipChunks as $chunk){
+                $binary[] = $this->addLeadingZeros(base_convert($chunk, 16,2), 16);
+            }
+            return implode(':', $binary);
+        }
+        return 'Invalid IP';
+    }
+
+    /**
+     * Converts a IP address in binary to its human-readable counterpart (base 10 for IPv4 or base 16 for IPv6).
+     * 11000000.10101000.00000001.00000001 -> 192.168.1.1
+     * @param string $binary ex : 11000000.10101000.00000001.00000001
+     * @return string ex : 192.168.1.1
+     */
+    public function binary2ip(string $binary=''): string
+    {
+        /*
+         * How to discriminate ?
+         * -> Is there 3 . ? -> Convert to IPv4
+         * -> Is there one or more (maximum 7) : ? -> convert to IPv6
+         * -> Anything else -> return invalid entry
+         */
+        if (substr_count($binary, '.')===3){
+            // IPv4
+            $ip=[];
+            $chunks = explode(".", $binary);
+            foreach ($chunks as $chunk){
+                $ip[] = base_convert(intval($chunk), 2,10);
+            }
+            return implode('.', $ip);
+        } elseif (substr_count($binary, ':')>=1 && substr_count($binary, ':')<=7){
+            // IPv6
+            $ip=[];
+            $chunks = explode(":", $binary);
+            foreach ($chunks as $chunk){
+                $ip[] = base_convert($chunk, 2,16);
+            }
+            return implode(':', $ip);
+        }
+        return 'Invalid IP';
+    }
+
+    /**
      * @param string $ip
      * @param string $fileIP2locate You can get these files here legally and for free here https://download.ip2location.com/lite/
      * @return string
@@ -152,7 +212,6 @@ class IP_tools
         }
         return 'Unknown';
     }
-
 
     /**
      * Retrieve the IP requesting the called page.
@@ -175,6 +234,19 @@ class IP_tools
         else
             $ipaddress = 'UNKNOWN';
         return $ipaddress;
+    }
+
+
+    /****************************************** INNER FUNCTION ********************************************************/
+
+    /**
+     * Add leading zeros to a binary string. Ex : 101 -> 00000101
+     * @param $binary int The binary getting the leading zeros.
+     * @param $length int The length of the final string.
+     * @return string
+     */
+    private function addLeadingZeros(int $binary=0, int $length=8):string{
+        return str_repeat('0', $length - strlen(strval($binary))) .$binary;
     }
 }
 

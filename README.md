@@ -34,9 +34,15 @@ $new_ipv6 = $my_ip_tools->generateRandomIPv6();
 $long_ipv4 = $my_ip_tools->ip2long($new_ipv4);
 // For IPv6 addresses, the result is truncated because the system can not represent such big numbers.
 $long_ipv6 = $my_ip_tools->ip2long($new_ipv6);
-// Convert an IP to an integer
+// Convert an integer to its equivalent IP.
 $new_ipv4 == $my_ip_tools->long2ip($long_ipv4); // TRUE
 $new_ipv6 == $my_ip_tools->long2ip($long_ipv6); // FALSE (due to misrepresentation of huge numbers). Still usable !
+// Convert an IPv4 or IPv6 to its binary equivalent.
+$binaryIPv4 = $my_ip_tools->ip2binary($new_ipv4);
+$binaryIPv6 = $my_ip_tools->ip2binary($new_ipv6);
+// Convert binary IP to its human-readable equivalent.
+$new_ipv4 == $my_ip_tools->binary2ip($binaryIPv4); // TRUE
+$new_ipv6 == $my_ip_tools->binary2ip($binaryIPv6); // TRUE
 
 // INFERRING
 // Get country of an IP address. You need an external file that you can grab here (for free) : https://download.ip2location.com/lite/
